@@ -1,3 +1,4 @@
+from pancake import heuristics
 from search import search
 from pancake_state import pancake_state
 from heuristics import *
@@ -5,7 +6,10 @@ from heuristics import *
 if __name__ == '__main__':
     goal_state = "4,3,2,1"
     pancake_input = "4,2,3,1"
+    #pancake_input = "5,3,6,4,1,2"
     pancake_state = pancake_state(pancake_input)
+    print(heuristics.base_heuristic(pancake_state))
+    print(heuristics.advanced_heuristic(pancake_state))
     search_result = search(pancake_state, base_heuristic, goal_state)
 
 
