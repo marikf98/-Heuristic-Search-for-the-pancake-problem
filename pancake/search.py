@@ -1,47 +1,89 @@
+import heapq
+import queue
+from collections import defaultdict
+
 from search_node import search_node
 
 
 def create_open_set():
-    pass
+    open_set = queue.PriorityQueue()
+    return open_set
 
 
 def create_closed_set():
-    pass
+    closed_set = {}  # might need to change this data structure to something else
+    return closed_set
 
 
 def add_to_open(vn, open_set):
-    pass
+    if vn.prev is None:
+        open_set.put(vn)
+        return
+
+    prev_node = vn.prev
+    sum = 0
+    while prev_node is not None:
+        sum += prev_node.g
+        prev_node = prev_node.prev
+
+    vn.g = sum
+    open_set.put(vn)
 
 
 def open_not_empty(open_set):
-    pass
+    if open_set.empty():
+        return False
+    return True
 
 
 def get_best(open_set):
-    pass
+    # we use [1] here to extract the node itself, the set stores everything in tupples where [0] is the heap sorting value
+
+    return open_set.get()[1]
 
 
 def add_to_closed(vn, closed_set):
-    pass
+    closed_set.add(vn)
 
-#returns False if curr_neighbor state not in open_set or has a lower g from the node in open_set
-#remove the node with the higher g from open_set (if exists)
+
+# returns False if curr_neighbor state not in open_set or has a lower g from the node in open_set
+# remove the node with the higher g from open_set (if exists)
 def duplicate_in_open(vn, open_set):
-    pass
+    queue_list = list(open_set)
+    for node in queue_list:
+        if node.state == vn.state: # the state is a string so no need for a custom __eq__ function
+            if node.g >= vn.g:
+                queue_list.remove(node)
+                temp_queue = queue.PriorityQueue()
+                temp_queue.queue = queue_list
+                heapq.heapify(temp_queue.queue)
+                open_set = temp_queue
+                return False
+            else:
+                return True
+    return False
 
-#returns False if curr_neighbor state not in closed_set or has a lower g from the node in closed_set
-#remove the node with the higher g from closed_set (if exists)
+
+# returns False if curr_neighbor state not in closed_set or has a lower g from the node in closed_set
+# remove the node with the higher g from closed_set (if exists)
 def duplicate_in_closed(vn, closed_set):
-    pass
+    for node in closed_set:
+        if node.state == vn.state:
+            if node.g >= vn.g:
+                closed_set.discard(node)
+                return False
+            else:
+                return True
+    return False
+
 
 def print_path(path):
-    for i in range(len(path)-1):
+    for i in range(len(path) - 1):
         print(f"[{path[i].state.get_state_str()}]", end=", ")
     print(path[-1].state.state_str)
 
 
 def search(start_state, heuristic, goal_state):
-
     open_set = create_open_set()
     closed_set = create_closed_set()
     start_node = search_node(start_state, 0, heuristic(start_state))
@@ -67,7 +109,3 @@ def search(start_state, heuristic, goal_state):
                 add_to_open(curr_neighbor, open_set)
 
     return None
-
-
-
-
