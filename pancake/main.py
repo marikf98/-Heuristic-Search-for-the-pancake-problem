@@ -10,7 +10,9 @@ if __name__ == '__main__':
     pancake_state = pancake_state(pancake_input)
 
     pancake_state.get_neighbors()
-    search_result = search(pancake_state, base_heuristic, goal_state)
+    # search_result = search(pancake_state, base_heuristic, goal_state)
+    search_result = search(pancake_state, advanced_heuristic, goal_state)
+    print(search_result)
 
 
 

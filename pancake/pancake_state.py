@@ -14,11 +14,10 @@ class pancake_state:
         neighbors = []
         for i in range(0, len(pancake_stack)):
             reverse_part = pancake_stack[i:][::-1]
-
             # cost = sum(reverse_part)
             # state = ((pancake_stack[:i] + reverse_part).__str__())[1:-1]
-
-            neighbors.append((((pancake_stack[:i] + reverse_part).__str__())[1:-1], sum(reverse_part)))
+            neighbors.append((pancake_state("".join(((pancake_stack[:i] + reverse_part).__str__())[1:-1].split())), sum(reverse_part)))
+            # neighbors.append((((pancake_stack[:i] + reverse_part).__str__())[1:-1], sum(reverse_part)))
         return neighbors
 
     #you can change the body of the function if you want

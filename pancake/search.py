@@ -6,18 +6,20 @@ from search_node import search_node
 
 
 def create_open_set():
-    open_set = queue.PriorityQueue()
+    #open_set = queue.PriorityQueue()
+    open_set = []
     return open_set
 
 
 def create_closed_set():
-    closed_set = {}  # might need to change this data structure to something else
+    closed_set = set()  # might need to change this data structure to something else
     return closed_set
 
 
 def add_to_open(vn, open_set):
     if vn.prev is None:
-        open_set.put(vn)
+        heapq.heappush(open_set, (vn.f, vn))
+        # open_set.put(vn)
         return
 
     prev_node = vn.prev
@@ -27,11 +29,13 @@ def add_to_open(vn, open_set):
         prev_node = prev_node.prev
 
     vn.g = sum
-    open_set.put(vn)
+    heapq.heappush(open_set, (vn.f, vn))
+    # open_set.put(vn)
 
 
 def open_not_empty(open_set):
-    if open_set.empty():
+    # if open_set.empty():
+    if len(open_set) == 0:
         return False
     return True
 
@@ -39,7 +43,8 @@ def open_not_empty(open_set):
 def get_best(open_set):
     # we use [1] here to extract the node itself, the set stores everything in tupples where [0] is the heap sorting value
 
-    return open_set.get()[1]
+    # return open_set.get()
+    return heapq.heappop(open_set)[1]
 
 
 def add_to_closed(vn, closed_set):
@@ -49,15 +54,17 @@ def add_to_closed(vn, closed_set):
 # returns False if curr_neighbor state not in open_set or has a lower g from the node in open_set
 # remove the node with the higher g from open_set (if exists)
 def duplicate_in_open(vn, open_set):
-    queue_list = list(open_set)
+    queue_list = sorted(open_set)
     for node in queue_list:
-        if node.state == vn.state: # the state is a string so no need for a custom __eq__ function
-            if node.g >= vn.g:
+        if node[1].state == vn.state: # the state is a string so no need for a custom __eq__ function
+            if node[1].g >= vn.g:
                 queue_list.remove(node)
-                temp_queue = queue.PriorityQueue()
-                temp_queue.queue = queue_list
-                heapq.heapify(temp_queue.queue)
-                open_set = temp_queue
+                open_set = queue_list
+                heapq.heapify(open_set)
+                # temp_queue = queue.PriorityQueue()
+                # temp_queue.queue = queue_list
+                # heapq.heapify(temp_queue.queue)
+                # open_set = temp_queue
                 return False
             else:
                 return True
