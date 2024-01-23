@@ -54,17 +54,13 @@ def add_to_closed(vn, closed_set):
 # returns False if curr_neighbor state not in open_set or has a lower g from the node in open_set
 # remove the node with the higher g from open_set (if exists)
 def duplicate_in_open(vn, open_set):
-    queue_list = sorted(open_set)
-    for node in queue_list:
-        if node[1].state == vn.state: # the state is a string so no need for a custom __eq__ function
+    #queue_list = sorted(open_set)
+    for node in open_set:
+        if node[1] == vn: # the state is a string so no need for a custom __eq__ function
             if node[1].g >= vn.g:
-                queue_list.remove(node)
-                open_set = queue_list
+                open_set.remove(node)
                 heapq.heapify(open_set)
-                # temp_queue = queue.PriorityQueue()
-                # temp_queue.queue = queue_list
-                # heapq.heapify(temp_queue.queue)
-                # open_set = temp_queue
+
                 return False
             else:
                 return True

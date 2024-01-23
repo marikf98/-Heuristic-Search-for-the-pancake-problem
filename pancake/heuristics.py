@@ -1,18 +1,17 @@
 
 def base_heuristic(_pancake_state):
-# we assume that the state is in this string format - 5,4,3,2,1.
-    heuristic = 0
     pancake_stack = _pancake_state.get_state_str().split(',')
     pancake_stack = [int(num) for num in pancake_stack]
+    sum_index = 0
     for i in range(0, len(pancake_stack)):
         if pancake_stack[i] != len(pancake_stack) - i:
-            heuristic += pancake_stack[i]
-
-    return heuristic
+            sum_index = i
+            return sum(pancake_stack[sum_index:])
+    return 0
 
 
 def advanced_heuristic(_pancake_state):
-    # like the heuristic that in the slides of the pratical session
+    # like the heuristic that in the slides of the practical session
 
     heuristic = 0
     pancake_stack = _pancake_state.get_state_str().split(',')
