@@ -1,5 +1,5 @@
 from pancake import heuristics
-from search import search
+from search import search, print_path
 from pancake_state import pancake_state
 from heuristics import *
 
@@ -14,7 +14,7 @@ if __name__ == '__main__':
     pancake_state.get_neighbors()
     search_result = search(pancake_state, base_heuristic, goal_state)
     # search_result = search(pancake_state, advanced_heuristic, goal_state)
-    print(search_result)
+    print_path(search_result)
 
 
 
