@@ -10,30 +10,25 @@ close_set_dict = {}
 def create_open_set():
     #open_set = queue.PriorityQueue()
     # open_set = []
+    open_set_dict.clear()
     return []
 
 
 def create_closed_set():
     # closed_set =  set() # might need to change this data structure to something else
+    close_set_dict.clear()
     return set()
 
 
 def add_to_open(vn, open_set):
     if vn.prev is None:
-        # heapq.heappush(open_set, (vn.h, vn))
         heapq.heappush(open_set, vn)
         open_set_dict[vn.state] = vn
-        # open_set.put(vn)
         return
 
     prev_node = vn.prev
-    sum = 0
     while prev_node is not None:
-        sum += prev_node.g
         prev_node = prev_node.prev
-
-    # vn.g = sum
-    # heapq.heappush(open_set, (vn.h, vn))
     heapq.heappush(open_set, vn)
     open_set_dict[vn.state] = vn
 
@@ -62,7 +57,6 @@ def add_to_closed(vn, closed_set):
 # returns False if curr_neighbor state not in open_set or has a lower g from the node in open_set
 # remove the node with the higher g from open_set (if exists)
 def duplicate_in_open(vn, open_set):
-    #queue_list = sorted(open_set)
     if vn.state in open_set_dict:
         if open_set_dict[vn.state].g >= vn.g:
             open_set.remove(open_set_dict[vn.state])
@@ -71,19 +65,6 @@ def duplicate_in_open(vn, open_set):
         else:
             return True
     return False
-    # for node in open_set:
-    #     if node == vn:
-    #         if node.g >= vn.g:
-    #         # if node[1] == vn:
-    #         #     if node[1].g >= vn.g:
-    #             open_set.remove(node)
-    #             # open_set.append(vn)
-    #             heapq.heapify(open_set)
-    #             return False
-    #         else:
-    #             return True
-    # return False
-
 
 # returns False if curr_neighbor state not in closed_set or has a lower g from the node in closed_set
 # remove the node with the higher g from closed_set (if exists)
